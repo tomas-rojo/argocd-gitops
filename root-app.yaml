@@ -4,7 +4,7 @@ metadata:
   name: root-app
   namespace: argocd
 spec:
-  project: root-app
+  project: default
   source:
     repoURL: https://github.com/argoproj/argocd-gitops.git
     targetRevision: HEAD
@@ -16,12 +16,12 @@ spec:
     automated:
       prune: true
       selfHeal: true
-  syncOptions:
-    - CreateNamespace=true
-    - Replace=true
-  retry:
-    limit: 2
-    backoff:
-      duration: 5s
-      factor: 2
-      maxDuration: 30s
+    syncOptions:
+      - CreateNamespace=true
+      - Replace=true
+    retry:
+      limit: 2
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 30s
