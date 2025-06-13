@@ -1,0 +1,48 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dev-appset
+  namespace: argocd
+spec:
+  goTemplate:
+    enabled: true
+  generators:
+    - list:
+        elements:
+          - service: inventory-service
+            secrets: true
+            chartVersion: '0.1.1'
+          - service: ecolabel-service
+            secrets: false
+            chartVersion: '0.1.0'
+  template:
+    metadata:
+      name: "dev-{{ .service }}"
+    spec:
+      destination:
+        name: in-cluster
+        namespace: dev
+      project: dev
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+  templatePatch: |
+    spec:
+      sources:
+        - repoURL: https://github.com/trojocerqlar/helm-charts
+          targetRevision: {{.chartVersion}}
+          chart: '{{.service}}'
+          helm:
+            releaseName: '{{.service}}'
+            {{ if .secrets }}
+            valueFiles:
+              - $values/values.dev.yaml
+              - $values/secrets.dev.yaml
+            {{ else }}
+            valueFiles:
+              - $values/values.dev.yaml
+            {{ end }}
+        - repoURL: https://github.com/trojocerqlar/{{.service}}
+          targetRevision: main
+          ref: values
