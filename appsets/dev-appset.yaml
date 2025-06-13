@@ -29,7 +29,7 @@ spec:
   templatePatch: |
     spec:
       sources:
-        - repoURL: https://github.com/trojocerqlar/helm-charts
+        - repoURL: https://github.com/tomas-rojo
           targetRevision: {{.chartVersion}}
           chart: '{{.service}}'
           helm:
