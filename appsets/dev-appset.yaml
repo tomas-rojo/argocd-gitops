@@ -4,8 +4,7 @@ metadata:
   name: dev-appset
   namespace: argocd
 spec:
-  goTemplate:
-    enabled: true
+  goTemplate: true
   generators:
     - list:
         elements:
