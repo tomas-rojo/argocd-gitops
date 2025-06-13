@@ -29,7 +29,7 @@ spec:
   templatePatch: |
     spec:
       sources:
-        - repoURL: oci://ghcr.io/tomas-rojo
+        - repoURL: ghcr.io/tomas-rojo
           targetRevision: {{.chartVersion}}
           chart: '{{.service}}'
           helm:
