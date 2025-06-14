@@ -10,7 +10,7 @@ spec:
         elements:
           - service: inventory-service
             secrets: true
-            chartVersion: '0.1.'
+            chartVersion: '0.1.0'
           - service: ecolabel-service
             secrets: false
             chartVersion: '0.1.1'
