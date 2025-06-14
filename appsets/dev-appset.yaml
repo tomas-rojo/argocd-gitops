@@ -10,10 +10,10 @@ spec:
         elements:
           - service: inventory-service
             secrets: true
-            chartVersion: '0.1.1'
+            chartVersion: '0.1.'
           - service: ecolabel-service
             secrets: false
-            chartVersion: '0.1.0'
+            chartVersion: '0.1.1'
   template:
     metadata:
       name: "dev-{{ .service }}"
