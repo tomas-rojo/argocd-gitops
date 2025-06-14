@@ -36,11 +36,11 @@ spec:
             releaseName: '{{.service}}'
             {{ if .secrets }}
             valueFiles:
-              - $values/values.dev.yaml
-              - $values/secrets.dev.yaml
+              - $values/.chart/values.dev.yaml
+              - $values/.chart/secrets.dev.yaml
             {{ else }}
             valueFiles:
-              - $values/values.dev.yaml
+              - $values/.chart/values.dev.yaml
             {{ end }}
         - repoURL: https://github.com/trojocerqlar/{{.service}}
           targetRevision: main
