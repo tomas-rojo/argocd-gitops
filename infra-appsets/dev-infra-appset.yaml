@@ -13,11 +13,11 @@ spec:
             chart: gateway-helm
             repoUrl: docker.io/envoyproxy
             namespace: gateway
-          # - service: redis
-          #   chartVersion: "21.0.0"
-          #   chart: redis
-          #   repoUrl: https://charts.bitnami.com/bitnami
-          #   namespace: dev
+          - service: redis
+            chartVersion: "21.0.0"
+            chart: redis
+            repoUrl: https://charts.bitnami.com/bitnami
+            namespace: dev
   template:
     metadata:
       name: "dev-{{ .service }}"
