@@ -32,7 +32,7 @@ spec:
             chartVersion: "0.1.0"
             chart: envoy-gateway
             repoUrl: ghcr.io/tomas-rojo
-            namespace: gateway
+            namespace: default
   template:
     metadata:
       name: "dev-{{ .service }}"
