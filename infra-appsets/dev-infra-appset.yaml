@@ -23,14 +23,14 @@ spec:
       name: "dev-{{ .service }}"
     spec:
       source:
-        repoURL: {{ .repoUrl }}
-        targetRevision: {{ .chartVersion }}
-        chart: {{ .chart }}
+        repoURL: "{{ .repoUrl }}"
+        targetRevision: "{{ .chartVersion }}"
+        chart: "{{ .chart }}"
         helm:
-          releaseName: {{ .service }}
+          releaseName: "{{ .service }}"
       destination:
         name: in-cluster
-        namespace: {{ .namespace }}
+        namespace: "{{ .namespace }}"
       project: default
       syncPolicy:
         automated:
