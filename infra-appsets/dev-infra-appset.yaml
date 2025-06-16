@@ -28,6 +28,11 @@ spec:
             chart: cert-manager
             repoUrl: https://charts.jetstack.io
             namespace: default
+          - service: envoy-gateway-config
+            chartVersion: "0.1.0"
+            chart: envoy-gateway
+            repoUrl: ghcr.io/tomas-rojo
+            namespace: gateway
   template:
     metadata:
       name: "dev-{{ .service }}"
