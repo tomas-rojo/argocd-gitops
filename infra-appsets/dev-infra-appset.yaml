@@ -27,7 +27,7 @@ spec:
             chartVersion: "v1.12.0"
             chart: cert-manager
             repoUrl: https://charts.jetstack.io
-            namespace: cert-manager
+            namespace: default
   template:
     metadata:
       name: "dev-{{ .service }}"
