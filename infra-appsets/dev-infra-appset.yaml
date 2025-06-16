@@ -18,6 +18,11 @@ spec:
             chart: redis
             repoUrl: https://charts.bitnami.com/bitnami
             namespace: dev
+          - service: github-runners
+            chartVersion: "0.23.7"
+            chart: actions-runner-controller
+            repoUrl: https://actions-runner-controller.github.io/actions-runner-controller
+            namespace: default
   template:
     metadata:
       name: "dev-{{ .service }}"
