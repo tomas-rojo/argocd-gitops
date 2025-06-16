@@ -23,6 +23,11 @@ spec:
             chart: actions-runner-controller
             repoUrl: https://actions-runner-controller.github.io/actions-runner-controller
             namespace: default
+          - service: cert-manager
+            chartVersion: "v1.12.0"
+            chart: cert-manager
+            repoUrl: https://charts.jetstack.io
+            namespace: cert-manager
   template:
     metadata:
       name: "dev-{{ .service }}"
