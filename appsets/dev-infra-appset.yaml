@@ -1,0 +1,52 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: dev-infra-appset
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - service: envoy-gateway
+            chartVersion: '1.4.1'
+            namespace: gateway
+  template:
+    metadata:
+      name: "dev-{{ .service }}"
+    spec:
+      source:
+        repoURL: docker.io/envoyproxy
+        targetRevision: {{.chartVersion}}
+        chart: gateway-helm
+        helm:
+          releaseName: '{{.service}}'
+      destination:
+        name: in-cluster
+        namespace: {{.namespace}}
+      project: dev
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+        - CreateNamespace=true
+  templatePatch: |
+    spec:
+      sources:
+        - repoURL: ghcr.io/tomas-rojo
+          targetRevision: {{.chartVersion}}
+          chart: '{{.service}}'
+          helm:
+            releaseName: '{{.service}}'
+            {{ if .secrets }}
+            valueFiles:
+              - $values/.chart/values.dev.yaml
+              - $values/.chart/secrets.dev.yaml
+            {{ else }}
+            valueFiles:
+              - $values/.chart/values.dev.yaml
+            {{ end }}
+        - repoURL: https://github.com/trojocerqlar/{{.service}}
+          targetRevision: main
+          ref: values
