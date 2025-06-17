@@ -8,11 +8,6 @@ spec:
   generators:
     - list:
         elements:
-          - service: envoy-gateway
-            chartVersion: "v1.4.1"
-            chart: gateway-helm
-            repoUrl: docker.io/envoyproxy
-            namespace: gateway
           - service: redis
             chartVersion: "21.0.0"
             chart: redis
@@ -28,7 +23,7 @@ spec:
             chart: cert-manager
             repoUrl: https://charts.jetstack.io
             namespace: cert-manager
-          - service: envoy-gateway-config
+          - service: envoy-gateway
             chartVersion: "0.1.0"
             chart: envoy-gateway
             repoUrl: ghcr.io/tomas-rojo
