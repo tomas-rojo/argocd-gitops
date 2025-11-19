@@ -3,6 +3,8 @@ kind: ApplicationSet
 metadata:
   name: bmk-appset
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
   goTemplate: true
   generators:
@@ -15,7 +17,7 @@ spec:
           - service: ecolabel-service
             secrets: false
             chartVersion: '0.1.1'
-            syncWave: "1"
+            syncWave: "2"
   template:
     metadata:
       name: "bmk-{{ .service }}"
