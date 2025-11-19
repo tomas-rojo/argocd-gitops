@@ -8,26 +8,26 @@ spec:
   generators:
     - list:
         elements:
-          - service: redis
-            chartVersion: "21.0.0"
-            chart: redis
-            repoUrl: https://charts.bitnami.com/bitnami
-            namespace: dev
-          - service: github-runners
-            chartVersion: "0.23.7"
-            chart: actions-runner-controller
-            repoUrl: https://actions-runner-controller.github.io/actions-runner-controller
-            namespace: default
+          # - service: redis
+          #   chartVersion: "21.0.0"
+          #   chart: redis
+          #   repoUrl: https://charts.bitnami.com/bitnami
+          #   namespace: dev
+          # - service: github-runners
+          #   chartVersion: "0.23.7"
+          #   chart: actions-runner-controller
+          #   repoUrl: https://actions-runner-controller.github.io/actions-runner-controller
+          #   namespace: default
           - service: cert-manager
             chartVersion: "v1.12.0"
             chart: cert-manager
             repoUrl: https://charts.jetstack.io
             namespace: cert-manager
-          - service: envoy-gateway
-            chartVersion: "0.1.0"
-            chart: envoy-gateway
-            repoUrl: ghcr.io/tomas-rojo
-            namespace: gateway
+          # - service: envoy-gateway
+          #   chartVersion: "0.1.0"
+          #   chart: envoy-gateway
+          #   repoUrl: ghcr.io/tomas-rojo
+          #   namespace: gateway
   template:
     metadata:
       name: "dev-{{ .service }}"

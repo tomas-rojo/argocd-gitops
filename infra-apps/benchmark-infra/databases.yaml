@@ -1,0 +1,52 @@
+# Postgres
+apiVersion: v1
+kind: Service
+metadata:
+  name: bmk-postgres
+  labels:
+    app: bmk-postgres
+spec:
+  ports:
+    - port: 5432
+  selector:
+    app: bmk-postgres
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bmk-postgres
+  labels:
+    app: bmk-postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bmk-postgres
+  template:
+    metadata:
+      labels:
+        app: bmk-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: benchmarkdb
+            - name: POSTGRES_USER
+              value: benchmarkuser
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bmk-postgres-secret
+                  key: postgres-password
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bmk-postgres-secret
+type: Opaque
+data:
+  postgres-password: Ym1rX3Bvc3RncmVzc19wYXNzd29yZA==  # base64 for bmk_postgres_password

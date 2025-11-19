@@ -1,0 +1,54 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: bmk-appset
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - service: inventory-service
+            secrets: true
+            chartVersion: '0.1.0'
+            syncWave: "1"
+          - service: ecolabel-service
+            secrets: false
+            chartVersion: '0.1.1'
+            syncWave: "2"
+  template:
+    metadata:
+      name: "bmk-{{ .service }}"
+      annotations:
+        argocd.argoproj.io/sync-wave: "{{ .syncWave }}"
+    spec:
+      destination:
+        name: in-cluster
+        namespace: bmk
+      project: bmk
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
+  templatePatch: |
+    spec:
+      sources:
+        - repoURL: ghcr.io/tomas-rojo
+          targetRevision: {{.chartVersion}}
+          chart: '{{.service}}'
+          helm:
+            releaseName: '{{.service}}'
+            {{ if .secrets }}
+            valueFiles:
+              - $values/.chart/values.bmk.yaml
+              - $values/.chart/secrets.bmk.yaml
+            {{ else }}
+            valueFiles:
+              - $values/.chart/values.bmk.yaml
+            {{ end }}
+        - repoURL: https://github.com/trojocerqlar/{{.service}}
+          targetRevision: main
+          ref: values
