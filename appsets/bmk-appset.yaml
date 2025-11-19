@@ -33,9 +33,8 @@ spec:
         namespace: bmk
       project: bmk
       syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
+        syncOptions:
+          - CreateNamespace=true
   templatePatch: |
     spec:
       {{- if eq .type "kustomize" }}
