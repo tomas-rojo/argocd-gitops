@@ -3,18 +3,22 @@ kind: ApplicationSet
 metadata:
   name: bmk-appset
   namespace: argocd
-  annotations:
-    argocd.argoproj.io/sync-wave: "1"
 spec:
   goTemplate: true
   generators:
     - list:
         elements:
+          - service: infra
+            type: kustomize
+            path: infra-apps/benchmark-infra
+            syncWave: "0"
           - service: inventory-service
+            type: helm
             secrets: false
             chartVersion: '0.1.0'
             syncWave: "1"
           - service: ecolabel-service
+            type: helm
             secrets: false
             chartVersion: '0.1.1'
             syncWave: "2"
@@ -34,6 +38,12 @@ spec:
           selfHeal: true
   templatePatch: |
     spec:
+      {{- if eq .type "kustomize" }}
+      source:
+        repoURL: https://github.com/tomas-rojo/argocd-gitops.git
+        targetRevision: HEAD
+        path: {{.path}}
+      {{ else if eq .type "helm" }}
       sources:
         - repoURL: ghcr.io/tomas-rojo
           targetRevision: {{.chartVersion}}
@@ -51,3 +61,4 @@ spec:
         - repoURL: https://github.com/trojocerqlar/{{.service}}
           targetRevision: main
           ref: values
+      {{ end }}
