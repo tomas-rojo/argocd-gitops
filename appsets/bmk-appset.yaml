@@ -10,7 +10,7 @@ metadata:
     - list:
         elements:
           - service: inventory-service
-            secrets: true
+            secrets: false
             chartVersion: '0.1.0'
             syncWave: "1"
           - service: ecolabel-service
