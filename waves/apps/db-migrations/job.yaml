@@ -1,0 +1,24 @@
+# apps/db-migrations/migrate-job.yaml
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: db-migrations
+spec:
+  backoffLimit: 0
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: migrate
+          image: postgres:16
+          command:
+            - sh
+            - -c
+            - |
+              echo "Waiting for Postgres...";
+              until pg_isready -h postgres -U appuser -d appdb; do
+                sleep 2;
+              done;
+              echo "Running migrations...";
+              sleep 5;
+              echo "Migrations complete";

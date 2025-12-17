@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: layered-db-poc
+  namespace: 
+spec:
+  generators:
+    - list:
+        elements:
+          - name: postgres
+            path: infra/postgres
+            wave: "0"
+          - name: db-migrations
+            path: apps/db-migrations
+            wave: "1"
+          - name: service-b
+            path: apps/service-b
+            wave: "2"
+
+  template:
+    metadata:
+      name: "{{name}}"
+      annotations:
+        argocd.argoproj.io/sync-wave: "{{wave}}"
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/tomas-rojo/argocd-gitops.git
+        targetRevision: HEAD
+        path: "{{path}}"
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: test
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
